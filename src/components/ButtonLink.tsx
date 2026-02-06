@@ -6,7 +6,7 @@ import { Magnetic } from "@/components/Magnetic";
 interface ButtonLinkProps {
   href: string;
   children: React.ReactNode;
-  tone?: "primary" | "secondary";
+  tone?: "primary" | "secondary" | "ghost";
   className?: string;
 }
 
@@ -27,7 +27,9 @@ export function ButtonLink({
           px-8 py-4 text-[12px] tracking-[0.2em] transition-all duration-300
           ${isPrimary
             ? "bg-[#0E0E0E] text-white hover:bg-zinc-800"
-            : "border border-zinc-200 bg-transparent text-zinc-900 hover:border-zinc-400"
+            : tone === "secondary"
+              ? "border border-zinc-200 bg-transparent text-zinc-900 hover:border-zinc-400"
+              : "border border-zinc-900/10 bg-white/0 text-zinc-900 backdrop-blur-sm hover:bg-zinc-900/5" // Ghost
           }
           ${className}
         `}

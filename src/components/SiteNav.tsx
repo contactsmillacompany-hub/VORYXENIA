@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/Container";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Magnetic } from "@/components/Magnetic";
 import { useCart } from "./CartContext";
 
@@ -21,23 +21,34 @@ export function SiteNav({ brandLabel = "VORYXENIA" }: { brandLabel?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setScrolled(latest > 50);
+  });
 
   return (
     <>
       <motion.header
         className="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" },
+        }}
+        initial="hidden"
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
       >
         <div
           className={`transition-all duration-700 ${scrolled || menuOpen
-            ? "bg-[#F6F5F2]/80 backdrop-blur-md border-b border-black/[0.04]"
+            ? "bg-[#F6F5F2]/90 backdrop-blur-md border-b border-black/[0.04]"
             : "bg-transparent delay-200"
             }`}
         >

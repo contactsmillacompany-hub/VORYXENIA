@@ -10,6 +10,9 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { Magnetic } from "@/components/Magnetic";
 import { openPieces } from "@/lib/pieces";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { FloatingGrid } from "@/components/FloatingGrid";
+import { FloatingItem } from "@/components/FloatingItem";
+import { MagneticImage } from "@/components/MagneticImage";
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -92,104 +95,56 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Selected Pieces - Masonry Style */}
-      <section className="py-32 sm:py-40">
-        <Container>
-          <div className="mb-24 flex items-end justify-between border-b border-black/[0.08] pb-8">
-            <FadeIn>
-              <h2 className="font-serif text-[clamp(32px,4vw,48px)] text-zinc-900">
-                Selected Editions
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.2} className="hidden sm:block">
-              <Link href="/collection" className="text-[11px] tracking-[0.2em] text-zinc-500 hover:text-zinc-900 transition-colors">
-                VIEW ALL
-              </Link>
-            </FadeIn>
-          </div>
+      {/* Antigravity Floating Gallery */}
+      <section className="relative min-h-[250vh] bg-[#F6F5F2]">
+        <FloatingGrid>
+          {/* Layer 0: Deep Background (Slow) */}
+          <FloatingItem depth={0.2} x="10%" y="10%" className="w-[40vw] opacity-20 filter grayscale blur-[1px]">
+            <MagneticImage src="/images/atelier-01.jpg" alt="Atelier Ambience" aspectRatio="4/3" />
+          </FloatingItem>
 
-          <div className="grid gap-x-12 gap-y-24 md:grid-cols-2 md:gap-y-40">
-            {openPieces.slice(0, 3).map((piece, idx) => (
-              <div
-                key={piece.slug}
-                className={`${idx % 2 === 1 ? "md:translate-y-32" : ""}`}
-              >
-                <FadeIn delay={idx * 0.2}>
-                  <Link href={`/collection/${piece.slug}`} className="group block cursor-none">
-                    {/* Note: In a real implementation we would add a custom cursor here */}
-                    <div className="relative aspect-[3/4] overflow-hidden bg-zinc-100">
-                      <Image
-                        src={piece.imagePath}
-                        alt={piece.imageAlt}
-                        fill
-                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="mt-8 flex justify-between items-baseline">
-                      <div>
-                        <div className="text-[10px] tracking-[0.3em] text-zinc-500 mb-2">
-                          {piece.editionLabel}
-                        </div>
-                        <h3 className="font-serif text-[24px] text-zinc-900">
-                          {piece.name}
-                        </h3>
-                      </div>
-                      <div className="text-[12px] tracking-[0.1em] text-zinc-700">
-                        {piece.price}
-                      </div>
-                    </div>
-                  </Link>
-                </FadeIn>
-              </div>
-            ))}
-          </div>
+          <FloatingItem depth={0.3} x="55%" y="60%" className="w-[35vw] opacity-20 mix-blend-multiply">
+            <MagneticImage src="/images/fabric-ivory-01.jpg" alt="Fabric Detail" aspectRatio="1/1" />
+          </FloatingItem>
 
-          <div className="mt-40 text-center sm:hidden">
-            <ButtonLink href="/collection" tone="secondary">View All Works</ButtonLink>
-          </div>
-        </Container>
+          {/* Layer 1: Midground (Normal) */}
+          <FloatingItem depth={1.0} x="15%" y="40%" className="w-[30vw]">
+            <Link href="/collection/midnight-wool-cape">
+              <MagneticImage src="/images/piece-05.png" alt="Midnight Wool Cape" aspectRatio="3/4" />
+              <div className="absolute -bottom-12 left-0 font-serif text-3xl">01. The Cape</div>
+            </Link>
+          </FloatingItem>
+
+          <FloatingItem depth={1.0} x="60%" y="15%" className="w-[28vw]">
+            <Link href="/collection/ivory-silk-tunic">
+              <MagneticImage src="/images/piece-01.png" alt="Ivory Tunic" aspectRatio="3/4" />
+              <div className="absolute -bottom-12 right-0 font-serif text-3xl">02. The Tunic</div>
+            </Link>
+          </FloatingItem>
+
+          {/* Layer 2: Foreground (Fast - Drifting) */}
+          <FloatingItem depth={1.4} x="50%" y="85%" className="w-[25vw] z-20">
+            <Link href="/collection/charcoal-wrap-skirt">
+              <MagneticImage src="/images/piece-02.png" alt="Charcoal Skirt" aspectRatio="3/4" />
+              <div className="absolute -left-12 top-1/2 -rotate-90 font-serif text-3xl">03. The Wrap</div>
+            </Link>
+          </FloatingItem>
+        </FloatingGrid>
       </section>
 
-      {/* Philosophy / Atelier Teaser */}
-      <section className="relative overflow-hidden bg-white py-40">
-        <div className="absolute inset-0 opacity-[0.03] bg-[url('/images/grain.png')] pointer-events-none" />
+      {/* Philosophy / Atelier Teaser - Minimalist */}
+      <section className="relative py-48 bg-white z-30">
         <Container className="relative">
           <div className="mx-auto max-w-2xl text-center">
             <FadeIn>
-              <span className="text-[10px] tracking-[0.4em] text-zinc-500 uppercase">
-                The Atelier
-              </span>
+              <h2 className="font-serif text-[clamp(42px,5vw,64px)] leading-[0.9] text-zinc-900 mb-12">
+                Gravity is optional. <br /> Form is absolute.
+              </h2>
             </FadeIn>
             <FadeIn delay={0.2}>
-              <p className="mt-10 font-serif text-[clamp(28px,3vw,42px)] leading-tight text-zinc-900">
-                "Form is edited. Finish is deliberate. Each piece is treated as a quiet object: 51% restraint, 49% precision."
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.4}>
               <div className="mt-12">
-                <Magnetic>
-                  <Link href="/atelier" className="inline-block border-b border-zinc-900 pb-1 text-[11px] tracking-[0.2em] text-zinc-900 transition-opacity hover:opacity-60">
-                    READ PHILOSOPHY
-                  </Link>
-                </Magnetic>
+                <ButtonLink href="/collection">Enter VORYXENIA</ButtonLink>
               </div>
-            </FadeIn>
-          </div>
-        </Container>
-      </section>
-
-      {/* Private Client Footer Call */}
-      <section className="py-32 sm:py-48">
-        <Container>
-          <div className="rounded-[2px] border border-zinc-200 p-12 sm:p-24 text-center transition-colors hover:border-zinc-300">
-            <FadeIn>
-              <h3 className="font-serif text-[32px] sm:text-[48px] text-zinc-900 mb-6">
-                Private Client
-              </h3>
-              <p className="mx-auto max-w-md text-[14px] leading-8 text-zinc-600 mb-12">
-                Requests are handled personally. Share your intended occasion, and we will respond with availability.
-              </p>
-              <ButtonLink href="/contact">Request Availability</ButtonLink>
             </FadeIn>
           </div>
         </Container>
