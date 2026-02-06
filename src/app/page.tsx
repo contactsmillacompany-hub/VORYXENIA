@@ -31,20 +31,20 @@ export default function Home() {
 
         <Container className="relative flex h-full flex-col justify-end pb-24 sm:pb-32">
           <div className="max-w-[90vw]">
-            <h1 className="font-serif text-[12vw] leading-[0.85] tracking-[-0.04em] text-zinc-900 mix-blend-multiply sm:text-[140px] overflow-hidden">
+            <h1 className="font-serif text-[12vw] leading-[0.85] tracking-[-0.04em] text-white mix-blend-overlay sm:text-[140px] overflow-hidden text-center sm:text-left">
               <span className="sr-only">VORYXENIA</span>
               <motion.span
                 initial="hidden"
                 animate="visible"
-                transition={{ staggerChildren: 0.1, delayChildren: 0.2 }}
+                transition={{ staggerChildren: 0.1, delayChildren: 0.5 }} // Slower start
                 aria-hidden
               >
                 {Array.from("VORYXENIA").map((char, i) => (
                   <motion.span
                     key={i}
                     variants={{
-                      hidden: { y: "100%" },
-                      visible: { y: 0, transition: { duration: 1.2, ease: [0.21, 0.47, 0.32, 0.98] } },
+                      hidden: { y: "110%" },
+                      visible: { y: 0, transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } }, // Elegant ease
                     }}
                     className="inline-block"
                   >
@@ -55,8 +55,8 @@ export default function Home() {
             </h1>
 
             <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-              <FadeIn delay={0.4} className="max-w-md">
-                <p className="text-[13px] tracking-[0.2em] text-zinc-800 uppercase leading-relaxed">
+              <FadeIn delay={1.2} className="max-w-md">
+                <p className="text-[13px] tracking-[0.2em] text-white/70 uppercase leading-relaxed text-center sm:text-left">
                   Silent confidence. Minimal form. <br />
                   Designed to remain.
                 </p>
@@ -74,19 +74,19 @@ export default function Home() {
           </div>
         </Container>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - Bottom Centered */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2"
+          transition={{ delay: 2.5, duration: 1 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mix-blend-difference z-20"
         >
-          <span className="text-[9px] tracking-[0.3em] text-zinc-500 uppercase">Scroll</span>
-          <div className="h-12 w-[1px] bg-zinc-300 overflow-hidden relative">
+          <span className="text-[9px] tracking-[0.3em] text-white/50 uppercase">Explore</span>
+          <div className="h-12 w-[1px] bg-white/20 overflow-hidden relative">
             <motion.div
               animate={{ y: ["-100%", "100%"] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 bg-zinc-900"
+              className="absolute inset-0 bg-white"
             />
           </div>
         </motion.div>
